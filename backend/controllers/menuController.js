@@ -22,12 +22,14 @@ const setMenu = async (req, res) => {
 };
 
 // Mengambil menu (commands) untuk grup
-const getMenu = async (req, res) => {
+const getGroupMenu = async (req, res) => {
   const { groupWaId } = req.params;
 
   try {
     const menu = await Menu.findOne({ groupWaId });
-    if (!menu) return res.status(404).json({ error: 'Menu tidak ditemukan untuk grup ini' });
+    if (!menu) {
+      return res.status(404).json({ error: 'Menu tidak ditemukan untuk grup ini' });
+    }
     res.json({ commands: menu.commands });
   } catch (err) {
     console.error('❌ Error saat get menu:', err);
@@ -56,4 +58,23 @@ const removeCommand = async (req, res) => {
   }
 };
 
-module.exports = { setMenu, getMenu, removeCommand };
+// Controller untuk mengambil daftar grup
+const getGroups = async (req, res) => {
+  try {
+    // Fetch groups dengan memilih hanya groupWaId dan commands
+    const groups = await Menu.find().select('groupWaId commands');
+
+    // Jika tidak ada grup, kembalikan array kosong
+    if (groups.length === 0) {
+      return res.json({ groups: [] });
+    }
+
+    // Kirim response dengan daftar grup
+    res.json({ groups });
+  } catch (err) {
+    console.error('❌ Error saat mengambil daftar grup:', err);
+    res.status(500).json({ error: 'Gagal mengambil daftar grup' });
+  }
+};
+
+module.exports = { setMenu, removeCommand, getGroups, getGroupMenu};

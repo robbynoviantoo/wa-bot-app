@@ -2,13 +2,18 @@ const express = require('express');
 const router = express.Router();
 const menuController = require('../controllers/menuController');
 
-// Menyimpan command ke dalam menu grup
-router.post('/', menuController.setMenu);
-
 // Mengambil menu untuk grup
-router.get('/:groupWaId', menuController.getMenu);
+router.get('/groups', menuController.getGroups);  // Rute untuk mendapatkan daftar grup
+
+router.get('/:groupWaId', menuController.getGroupMenu);  // Rute untuk mengambil menu berdasarkan groupWaId
+
+// Menyimpan command ke dalam menu grup
+router.post('/set', menuController.setMenu);
 
 // Menghapus command dari menu grup
 router.post('/remove', menuController.removeCommand);
+
+// Menyediakan daftar grup
+
 
 module.exports = router;
