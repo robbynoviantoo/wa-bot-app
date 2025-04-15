@@ -1,4 +1,5 @@
 const Menu = require('../models/Menu');
+const Memory = require('../models/Memory'); // pastikan sudah di-import
 
 // Menyimpan atau memperbarui menu (commands) untuk grup
 const setMenu = async (req, res) => {
@@ -37,7 +38,6 @@ const getGroupMenu = async (req, res) => {
   }
 };
 
-// Menghapus command dari menu
 const removeCommand = async (req, res) => {
   const { groupWaId, command } = req.body;
 
@@ -46,11 +46,16 @@ const removeCommand = async (req, res) => {
   }
 
   try {
+    // 1. Hapus command dari Menu
     const menu = await Menu.findOneAndUpdate(
       { groupWaId },
-      { $pull: { commands: command } }, // Menghapus command dari daftar
+      { $pull: { commands: command } },
       { new: true }
     );
+
+    // 2. Hapus memory dengan key = command di grup yang sama
+    await Memory.deleteOne({ groupWaId, key: `command:${command}` });
+
     res.json({ success: true, data: menu });
   } catch (err) {
     console.error('❌ Error saat remove command:', err);
