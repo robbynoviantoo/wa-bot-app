@@ -44,20 +44,6 @@ client.on("message", async (msg) => {
     }
   }
   
-
-  if (body.startsWith("/")) {
-    const commandName = body.slice(1).split(" ")[0].toLowerCase();
-    const menu = await api.getMenu(groupId);
-
-    if (menu?.commands?.includes(commandName)) {
-      const response = await api.getMemory(groupId, `command:${commandName}`);
-      if (response) {
-        msg.reply(response);
-      } else {
-        msg.reply(`⚠️ Tidak ada respons untuk command "/${commandName}"`);
-      }
-    }
-  }
 });
 
 client.initialize();
