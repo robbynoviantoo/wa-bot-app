@@ -3,17 +3,35 @@ const addCommand = require("./addCommand");
 const removeCommand = require("./removeCommand");
 const setResponse = require("./setResponse");
 const stickerCommand = require("./sticker");
+const ytmp3Command = require("./youtube");
 
 module.exports = async (msg, groupId, api) => {
   const body = msg.body.trim();
+  const commandName = body.slice(1).split(" ")[0].toLowerCase();
 
-  if (body.startsWith("/")) {
-    await menuCommand(msg, groupId, api);
-    await addCommand(msg, groupId, api);
-    await removeCommand(msg, groupId, api);
-    await setResponse(msg, groupId, api);
+  switch (commandName) {
+    case "menu":
+      return await menuCommand(msg, groupId, api);
+
+    case "add":
+      return await addCommand(msg, groupId, api);
+
+    case "remove":
+      return await removeCommand(msg, groupId, api);
+
+    case "set":
+      return await setResponse(msg, groupId, api);
+
+    case "sticker":
+    case "stiker":
+    case "s":
+      return await stickerCommand(msg);
+    case "ytmp3":
+      return await ytmp3Command(msg); // Menambahkan command YTMP3
+
+    default:
+      // Bisa diabaikan atau balas tidak dikenal
+      msg.reply("⚠️ Command tidak dikenali.");
+      return;
   }
-
-  // Command stiker
-  await stickerCommand(msg);
 };

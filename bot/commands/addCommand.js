@@ -3,6 +3,7 @@ module.exports = async (msg, groupId, api) => {
 
   if (body.startsWith("/addcommand ")) {
     const command = body.slice(12).trim();
+
     if (command) {
       try {
         await api.addCommand({ groupWaId: groupId, command });

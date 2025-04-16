@@ -51,7 +51,7 @@ module.exports = {
   // Tambah command ke menu grup
   addCommand: async ({ groupWaId, command }) => {
     try {
-      await api.post('/menu', { groupWaId, command });
+      await api.post('/menu/set', { groupWaId, command });
     } catch (err) {
       console.error('❌ Gagal menambahkan command ke menu:', err.message);
     }

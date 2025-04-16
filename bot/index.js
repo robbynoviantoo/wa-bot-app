@@ -34,8 +34,14 @@ client.on("message", async (msg) => {
   }
 
   if (body.startsWith("/")) {
-    await handleCommand(msg, groupId, api);
+    try {
+      await handleCommand(msg, groupId, api);
+    } catch (err) {
+      console.error("❌ Error di handleCommand:", err.message);
+      msg.reply("⚠️ Terjadi error saat memproses perintah.");
+    }
   }
+  
 
   if (body.startsWith("/")) {
     const commandName = body.slice(1).split(" ")[0].toLowerCase();
