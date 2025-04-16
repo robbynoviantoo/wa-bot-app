@@ -4,6 +4,8 @@ const removeCommand = require("./removeCommand");
 const setResponse = require("./setResponse");
 const stickerCommand = require("./sticker");
 const ytmp3Command = require("./youtube");
+const askAI = require("../lib/ai"); // ✅ Jangan tambahkan tanda `()` saat require
+
 
 module.exports = async (msg, groupId, api) => {
   const body = msg.body.trim();
@@ -13,7 +15,23 @@ module.exports = async (msg, groupId, api) => {
 
   const commandName = body.slice(1).split(" ")[0].toLowerCase();
 
-  // Cek apakah command termasuk custom command yang disimpan di database
+  // ✅ Tangani /bot (AI chat)
+  if (commandName === "bot") {
+    const prompt = body.slice(5).trim(); // ambil teks setelah "/bot "
+    if (!prompt) {
+      return msg.reply("⚠️ Mohon masukkan pertanyaan setelah /bot");
+    }
+
+    try {
+      const reply = await askAI(prompt);
+      return msg.reply(reply);
+    } catch (err) {
+      console.error("❌ Gagal memproses AI:", err);
+      return msg.reply("⚠️ Terjadi kesalahan saat menghubungi AI.");
+    }
+  }
+
+  // ✅ Cek apakah command termasuk custom command
   const menu = await api.getMenu(groupId);
   if (menu?.commands?.includes(commandName)) {
     const response = await api.getMemory(groupId, `command:${commandName}`);
@@ -24,7 +42,7 @@ module.exports = async (msg, groupId, api) => {
     }
   }
 
-  // Kalau bukan custom command, cek hardcoded command
+  // ✅ Hardcoded command
   switch (commandName) {
     case "menu":
       return await menuCommand(msg, groupId, api);

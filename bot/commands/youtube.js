@@ -12,7 +12,9 @@ module.exports = async (msg) => {
   console.log("🔗 URL yang diterima:", url);
 
   // Validasi URL
-  if (!url.match(/^https:\/\/(www\.youtube\.com\/watch\?v=|youtu\.be\/)[\w-]{11}/)) {
+  if (
+    !url.match(/^https:\/\/(www\.youtube\.com\/watch\?v=|youtu\.be\/)[\w-]{11}/)
+  ) {
     return msg.reply("⚠️ URL tidak valid.");
   }
 
@@ -39,8 +41,10 @@ module.exports = async (msg) => {
   try {
     const outputFile = path.join(tempDir, `audio_${Date.now()}.mp3`);
     console.log("📄 Output file MP3:", outputFile);
-
-    const shellCommand = `yt-dlp --cookies "${cookiesPath}" -f bestaudio --extract-audio --audio-format mp3 -o "${outputFile}" "${url}"`;
+    // // Docker
+    // const shellCommand = `yt-dlp --cookies "${cookiesPath}" -f bestaudio --extract-audio --audio-format mp3 -o "${outputFile}" "${url}"`;
+    // Windows
+    const shellCommand = `"${ytDlpPath}" --cookies "${cookiesPath}" --ffmpeg-location "${ffmpegPath}" -f bestaudio --extract-audio --audio-format mp3 -o "${outputFile}" "${url}"`;
 
     console.log("💻 Menjalankan perintah yt-dlp:");
     console.log(shellCommand);
@@ -67,7 +71,7 @@ module.exports = async (msg) => {
         const media = MessageMedia.fromFilePath(outputFile);
         await msg.reply(media, undefined, {
           caption: "✅ MP3 berhasil dikonversi!",
-          sendMediaAsDocument: true,  // Menyatakan untuk mengirim sebagai dokumen
+          sendMediaAsDocument: true, // Menyatakan untuk mengirim sebagai dokumen
         });
         console.log("✅ File berhasil dikirim.");
       } catch (err) {

@@ -19,10 +19,17 @@ app.use(cors({
 app.use(express.json());
 
 mongoose
-  .connect(process.env.MONGODB_URI, {
+// // Docker
+//   .connect(process.env.MONGODB_URI, {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//   })
+// Windows
+  .connect(process.env.DB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
+
   .then(() => console.log("✅ Terhubung ke MongoDB"))
   .catch((err) => console.error("MongoDB Error:", err));
 
@@ -38,6 +45,11 @@ app.get("/", (req, res) => {
 });
 
 // Mulai server
-app.listen(3009, '0.0.0.0', () => {
-  console.log('🚀 Backend berjalan di http://localhost:3009');
+app.listen(PORT, () => {
+  console.log(`🚀 Backend berjalan di http://localhost:${PORT}`);
 });
+
+// // Docker
+// app.listen(3009, '0.0.0.0', () => {
+//   console.log('🚀 Backend berjalan di http://localhost:3009');
+// });
