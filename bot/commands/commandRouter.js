@@ -13,13 +13,13 @@ module.exports = async (msg, groupId, api) => {
     case "menu":
       return await menuCommand(msg, groupId, api);
 
-    case "add":
+    case "addcommand":
       return await addCommand(msg, groupId, api);
 
-    case "remove":
+    case "removecommand":
       return await removeCommand(msg, groupId, api);
 
-    case "set":
+    case "setresponse":
       return await setResponse(msg, groupId, api);
 
     case "sticker":
