@@ -1,16 +1,22 @@
 FROM node:18
 
-WORKDIR /app/backend
+# Masuk ke root project
+WORKDIR /app
 
+# Copy file package.json dari root project
 COPY package*.json ./
 RUN npm install
 
-# ⬇️ Install nodemon global
+# Install nodemon secara global (opsional, karena sudah ada di deps)
 RUN npm install -g nodemon
 
+# Copy semua isi project ke dalam container
 COPY . .
+
+# Pindah ke folder backend agar command dijalankan dari sana
+WORKDIR /app/backend
 
 EXPOSE 3009
 
-# Jalankan menggunakan nodemon (pastikan script `api` = "nodemon server.js")
+# Jalankan backend (pastikan "api" script ada di package.json root)
 CMD ["npm", "run", "api"]
