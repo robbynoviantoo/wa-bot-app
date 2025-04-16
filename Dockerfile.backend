@@ -1,12 +1,23 @@
+# Gunakan image Node.js
 FROM node:18
 
+# Set working directory untuk backend
 WORKDIR /app/backend
 
-COPY package*.json ./
+# Salin hanya bagian backend dari konteks Docker build
+COPY backend/package*.json ./
+
+# Install dependencies backend
 RUN npm install
 
-COPY . .
+# Salin seluruh kode backend ke dalam image
+COPY backend/ .
 
-WORKDIR /app/backend
+# (Opsional) Install nodemon secara global jika kamu butuh live reload
+RUN npm install -g nodemon
 
+# Ekspose port yang digunakan backend
 EXPOSE 3009
+
+# Jalankan backend (bisa node atau nodemon)
+CMD ["npm", "run", "api"]
