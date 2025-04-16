@@ -4,8 +4,10 @@ const api = require("./lib/api");
 const handleCommand = require("./commands/commandRouter"); // pakai file yang kamu buat sendiri
 
 const client = new Client({
-  authStrategy: new LocalAuth(),
-  puppeteer: { headless: true },
+  puppeteer: {
+    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
+  }
 });
 
 client.on("qr", (qr) => {

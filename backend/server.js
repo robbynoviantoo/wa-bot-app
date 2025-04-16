@@ -19,7 +19,7 @@ app.use(cors({
 app.use(express.json());
 
 mongoose
-  .connect(process.env.DB_URI, {
+  .connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -38,6 +38,6 @@ app.get("/", (req, res) => {
 });
 
 // Mulai server
-app.listen(PORT, () => {
-  console.log(`🚀 Backend berjalan di http://localhost:${PORT}`);
+app.listen(3009, '0.0.0.0', () => {
+  console.log('🚀 Backend berjalan di http://localhost:3009');
 });
