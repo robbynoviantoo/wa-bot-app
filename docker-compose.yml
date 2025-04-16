@@ -15,38 +15,38 @@ services:
       context: .
       dockerfile: Dockerfile.backend
     container_name: backend
-    volumes:
-      - .:/app
-    working_dir: /app/backend
+    ports:
+      - "3009:3009"
     environment:
       - MONGODB_URI=mongodb://mongo:27017/wa-bot
     depends_on:
       - mongo
-    ports:
-      - "3009:3009"
-    command: npm run api
+    volumes:
+      - ./backend:/app/backend
+    working_dir: /app/backend
+    command: npx nodemon server.js
+
   bot:
     build:
       context: .
       dockerfile: Dockerfile.bot
     container_name: bot
-    command: npm run bot
+    command: npx nodemon bot/index.js
     volumes:
-      - .:/app
+      - ./bot:/app/bot
     working_dir: /app/bot
     depends_on:
       - backend
 
   frontend-dev:
     build:
-      context: .
-      dockerfile: ./frontend/Dockerfile
+      context: ./frontend
+      dockerfile: Dockerfile
     container_name: frontend-dev
     ports:
       - "5173:5173"
     volumes:
       - ./frontend:/app
-      - /app/node_modules
     working_dir: /app
     command: npm run dev
     depends_on:
