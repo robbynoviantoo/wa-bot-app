@@ -31,10 +31,9 @@ services:
       context: .
       dockerfile: Dockerfile.bot
     container_name: bot
-    command: npx nodemon bot/index.js
+    command: npm run bot
     volumes:
       - ./bot:/app/bot
-      - ./session:/app/bot/session  
     working_dir: /app/bot
     depends_on:
       - backend
