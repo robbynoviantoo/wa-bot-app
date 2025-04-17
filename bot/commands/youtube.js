@@ -41,10 +41,10 @@ module.exports = async (msg) => {
   try {
     const outputFile = path.join(tempDir, `audio_${Date.now()}.mp3`);
     console.log("📄 Output file MP3:", outputFile);
-    // // Docker
-    // const shellCommand = `yt-dlp --cookies "${cookiesPath}" -f bestaudio --extract-audio --audio-format mp3 -o "${outputFile}" "${url}"`;
-    // Windows
-    const shellCommand = `"${ytDlpPath}" --cookies "${cookiesPath}" --ffmpeg-location "${ffmpegPath}" -f bestaudio --extract-audio --audio-format mp3 -o "${outputFile}" "${url}"`;
+    // Docker
+    const shellCommand = `yt-dlp --cookies "${cookiesPath}" -f bestaudio --extract-audio --audio-format mp3 -o "${outputFile}" "${url}"`;
+    // // Windows
+    // const shellCommand = `"${ytDlpPath}" --cookies "${cookiesPath}" --ffmpeg-location "${ffmpegPath}" -f bestaudio --extract-audio --audio-format mp3 -o "${outputFile}" "${url}"`;
 
     console.log("💻 Menjalankan perintah yt-dlp:");
     console.log(shellCommand);
