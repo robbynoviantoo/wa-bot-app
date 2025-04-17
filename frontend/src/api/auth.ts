@@ -13,6 +13,6 @@ export const login = async (username: string, password: string) => {
 };
 
 export const logout = async () => {
-    const response = await axios.post("http://localhost:3009/api/auth/logout", {}, { withCredentials: true });
+    const response = await axios.post("http://103.23.198.66:3009/api/auth/logout", {}, { withCredentials: true });
     return response.data;
   };
