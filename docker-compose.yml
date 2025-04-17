@@ -31,14 +31,13 @@ services:
       context: .
       dockerfile: Dockerfile.bot
     container_name: bot
-    command: node bot/index.js # Ganti nodemon -> node
+    command: node bot/index.js
     volumes:
       - ./bot:/app/bot
-      - ./session:/app/bot/session # supaya LocalAuth persistent
+      - ./session:/app/bot/session
     working_dir: /app/bot
     depends_on:
       - backend
-
 
   frontend-dev:
     build:
