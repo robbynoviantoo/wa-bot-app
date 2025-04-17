@@ -3,6 +3,7 @@ const addCommand = require("./addCommand");
 const removeCommand = require("./removeCommand");
 const setResponse = require("./setResponse");
 const stickerCommand = require("./sticker");
+const stickerGifCommand = require("./stickerGif");
 const ytmp3Command = require("./youtube");
 const askAI = require("../lib/ai"); // ✅ Jangan tambahkan tanda `()` saat require
 
@@ -65,7 +66,7 @@ module.exports = async (msg, groupId, api) => {
       return await ytmp3Command(msg);
   
     case "gif":
-      return await stickerGif5Command(msg); // 👈 Tambahan baru
+      return await stickerGifCommand(msg); // 👈 Tambahan baru
   
     default:
       return msg.reply("⚠️ Command tidak dikenali.");
