@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const User = require("./models/User"); // pastikan path-nya sesuai
 
 const createAdmin = async () => {
-  await mongoose.connect(process.env.DB_URI, {
+  await mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
