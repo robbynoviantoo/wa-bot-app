@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getGroups } from '../api/menu';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { logout } from '../api/auth';  // Impor fungsi logout
 
 interface Group {
   groupWaId: string;
@@ -11,8 +12,10 @@ const HomePage: React.FC = () => {
   const [groups, setGroups] = useState<Group[]>([]);  // Pastikan inisialisasi dengan array kosong
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);  // Status loading
+  const navigate = useNavigate();  // Untuk navigasi programatik
 
   useEffect(() => {
+    document.title = "BOT - Home";
     const fetchGroups = async () => {
       try {
         const groupsList = await getGroups();
@@ -27,6 +30,16 @@ const HomePage: React.FC = () => {
     fetchGroups();
   }, []);
 
+  const handleLogout = async () => {
+    try {
+      await logout();  // Memanggil API logout
+      localStorage.removeItem('token');  // Menghapus token di localStorage
+      navigate('/login');  // Arahkan ke halaman login
+    } catch (err) {
+      console.error('Logout gagal:', err);
+    }
+  };
+
   if (loading) {
     return <p>Loading...</p>;  // Menampilkan loading saat data di-fetch
   }
@@ -34,6 +47,15 @@ const HomePage: React.FC = () => {
   return (
     <div className="p-4">
       <h1 className="text-2xl mb-4">Daftar Grup WhatsApp</h1>
+      
+      {/* Tombol Logout */}
+      <button
+        onClick={handleLogout}
+        className="bg-red-500 text-white p-2 rounded mb-4"
+      >
+        Logout
+      </button>
+
       {error && <p className="text-red-500">{error}</p>}
 
       {/* Pastikan groups tidak undefined atau null */}

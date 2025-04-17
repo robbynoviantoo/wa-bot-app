@@ -6,6 +6,7 @@ const groupRoutes = require("./routes/groupRoutes");
 const messageRoutes = require('./routes/messageRoutes');
 const memoryRoutes = require('./routes/memoryRoutes');
 const menuRoutes = require('./routes/menuRoutes');
+const authRoutes = require('./routes/auth');
 
 dotenv.config();
 const app = express();
@@ -19,21 +20,22 @@ app.use(cors({
 app.use(express.json());
 
 mongoose
-// Docker
-  .connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-// // Windows
-//   .connect(process.env.DB_URI, {
+// // Docker
+//   .connect(process.env.MONGODB_URI, {
 //     useNewUrlParser: true,
 //     useUnifiedTopology: true,
 //   })
+// Windows
+  .connect(process.env.DB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
 
   .then(() => console.log("✅ Terhubung ke MongoDB"))
   .catch((err) => console.error("MongoDB Error:", err));
 
 
+app.use("/api/auth", authRoutes);
 app.use("/api/group", groupRoutes);
 app.use('/api/message', messageRoutes);
 app.use('/api/memory', memoryRoutes);

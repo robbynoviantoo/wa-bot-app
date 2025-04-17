@@ -46,25 +46,29 @@ module.exports = async (msg, groupId, api) => {
   switch (commandName) {
     case "menu":
       return await menuCommand(msg, groupId, api);
-
+  
     case "addcommand":
       return await addCommand(msg, groupId, api);
-
+  
     case "removecommand":
       return await removeCommand(msg, groupId, api);
-
+  
     case "setresponse":
       return await setResponse(msg, groupId, api);
-
+  
     case "sticker":
     case "stiker":
     case "s":
       return await stickerCommand(msg);
-
+  
     case "ytmp3":
       return await ytmp3Command(msg);
-
+  
+    case "gif":
+      return await stickerGif5Command(msg); // 👈 Tambahan baru
+  
     default:
       return msg.reply("⚠️ Command tidak dikenali.");
   }
+  
 };
