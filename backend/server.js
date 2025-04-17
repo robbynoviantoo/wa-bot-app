@@ -20,16 +20,16 @@ app.use(cors({
 app.use(express.json());
 
 mongoose
-// // Docker
-//   .connect(process.env.MONGODB_URI, {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-//   })
-// Windows
-  .connect(process.env.DB_URI, {
+// Docker
+  .connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
+// // Windows
+//   .connect(process.env.DB_URI, {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//   })
 
   .then(() => console.log("✅ Terhubung ke MongoDB"))
   .catch((err) => console.error("MongoDB Error:", err));
