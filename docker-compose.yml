@@ -26,17 +26,19 @@ services:
     working_dir: /app/backend
     command: npx nodemon server.js
 
-  bot:
-    build:
-      context: .
-      dockerfile: Dockerfile.bot
-    container_name: bot
-    command: npm run bot
-    volumes:
-      - ./bot:/app/bot
-    working_dir: /app/bot
-    depends_on:
-      - backend
+bot:
+  build:
+    context: .
+    dockerfile: Dockerfile.bot
+  container_name: bot
+  command: node bot/index.js # Ganti nodemon -> node
+  volumes:
+    - ./bot:/app/bot
+    - ./session:/app/bot/session # supaya LocalAuth persistent
+  working_dir: /app/bot
+  depends_on:
+    - backend
+
 
   frontend-dev:
     build:
