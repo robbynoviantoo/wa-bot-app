@@ -34,6 +34,7 @@ services:
     command: npx nodemon bot/index.js
     volumes:
       - ./bot:/app/bot
+      - ./session:/app/bot/session  
     working_dir: /app/bot
     depends_on:
       - backend

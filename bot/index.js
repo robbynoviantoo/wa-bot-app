@@ -5,12 +5,14 @@ const handleCommand = require("./commands/commandRouter"); // pakai file yang ka
 
 // Docker
 const client = new Client({
+  authStrategy: new LocalAuth({
+    dataPath: './session' // folder session untuk persistent login
+  }),
   puppeteer: {
     headless: true,
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
   }
 });
-
 
 // // Windows
 // const client = new Client({
