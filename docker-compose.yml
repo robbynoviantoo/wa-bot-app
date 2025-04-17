@@ -31,7 +31,7 @@ services:
       context: .
       dockerfile: Dockerfile.bot
     container_name: bot
-    command: node bot/index.js
+    command: node index.js
     volumes:
       - ./bot:/app/bot
       - ./session:/app/bot/session
