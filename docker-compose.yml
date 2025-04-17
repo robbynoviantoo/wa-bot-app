@@ -33,6 +33,8 @@ services:
     volumes:
       - ./bot:/app/bot
       - ./session:/app/bot/session
+      - .:/app
+      - /app/node_modules
     working_dir: /app/bot
     depends_on:
       - backend
