@@ -13,8 +13,8 @@ const PORT = process.env.PORT || 3001;
 
 // Middleware
 app.use(cors({
-  origin: 'http://localhost:5173', // frontend URL
-  credentials: true               // penting untuk withCredentials
+  origin: ['http://localhost:5173', 'http://103.23.198.66:5173'], // tambah IP ke origin
+  credentials: true // penting untuk withCredentials
 }));
 app.use(express.json());
 

@@ -29,12 +29,12 @@ services:
       context: .
       dockerfile: Dockerfile.bot
     container_name: bot
+    environment:
+      - PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
     command: npx nodemon bot/index.js
     volumes:
       - ./bot:/app/bot
       - ./session:/app/bot/session
-      - .:/app
-      - /app/node_modules
     working_dir: /app/bot
     depends_on:
       - backend
