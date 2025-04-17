@@ -4,18 +4,18 @@ const api = require("./lib/api");
 const handleCommand = require("./commands/commandRouter"); // pakai file yang kamu buat sendiri
 
 // Docker
-const client = new Client({
-  puppeteer: {
-    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
-    args: ['--no-sandbox', '--disable-setuid-sandbox']
-  }
-});
-
-// // Windows
 // const client = new Client({
-//   authStrategy: new LocalAuth(),
-//   puppeteer: { headless: true },
+//   puppeteer: {
+//     executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
+//     args: ['--no-sandbox', '--disable-setuid-sandbox']
+//   }
 // });
+
+// Windows
+const client = new Client({
+  authStrategy: new LocalAuth(),
+  puppeteer: { headless: true },
+});
 
 client.on("qr", (qr) => {
   qrcode.generate(qr, { small: true });
