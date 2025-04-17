@@ -30,17 +30,19 @@ RUN apt-get update && apt-get install -y \
 # Install yt-dlp via pip
 RUN pip3 install yt-dlp --break-system-packages
 
-# Set environment untuk puppeteer-core
+# Puppeteer Chromium Path
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
-# Set workdir dan copy project
-WORKDIR /app
-COPY . .
+# Set workdir ke dalam bot folder
+WORKDIR /app/bot
 
-# Install dependencies Node.js
+# Copy hanya folder bot dari konteks build
+COPY package*.json ./
 RUN npm install
+COPY ./bot .
 
+# Install nodemon global
 RUN npm install -g nodemon
 
-# Jalankan bot
-CMD ["npm", "run", "bot"]
+# Jalankan bot pakai nodemon
+CMD ["npx", "nodemon", "index.js"]

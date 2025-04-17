@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   mongo:
     image: mongo:latest
@@ -31,7 +29,7 @@ services:
       context: .
       dockerfile: Dockerfile.bot
     container_name: bot
-    command: node index.js
+    command: npx nodemon bot/index.js
     volumes:
       - ./bot:/app/bot
       - ./session:/app/bot/session
