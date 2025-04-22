@@ -6,11 +6,21 @@ const handleCommand = require("./commands/commandRouter");
 // Docker
 const client = new Client({
   authStrategy: new LocalAuth({
-    clientId: "bot", // bisa diganti kalau kamu mau support banyak client
+    clientId: "bot",
+    dataPath: process.env.WA_DATA_PATH || "./session_data"  // Custom session data path
   }),
   puppeteer: {
     executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
-    args: ['--no-sandbox', '--disable-setuid-sandbox']
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-gpu',
+      '--disable-dev-shm-usage',
+      '--single-process',  // Helps in some environments
+      `--user-data-dir=${process.env.PUPPETEER_DATA_DIR || '/tmp/wa_puppeteer'}`  // Explicit profile directory
+    ],
+    headless: true,
+    ignoreDefaultArgs: ['--disable-extensions']  // Sometimes needed
   }
 });
 
