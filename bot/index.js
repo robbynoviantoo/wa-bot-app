@@ -10,10 +10,10 @@ const client = new Client({
   }),
   puppeteer: {
     executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
-    args: ['--no-sandbox', '--disable-setuid-sandbox']
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    userDataDir: "/tmp/puppeteer_profile" // Tambahkan folder cache profile unik
   }
 });
-
 // // Untuk Windows development
 // const client = new Client({
 //   authStrategy: new LocalAuth(),
