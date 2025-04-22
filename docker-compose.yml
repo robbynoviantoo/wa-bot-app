@@ -15,8 +15,8 @@ services:
     container_name: backend
     ports:
       - "3009:3009"
-    env_file:
-      - .env
+    environment:
+      - DB_URI=mongodb+srv://robbyprogaming1:Berlin270224!@veez.l3inp.mongodb.net/
     depends_on:
       - mongo
     volumes:
