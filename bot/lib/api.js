@@ -1,7 +1,7 @@
 const axios = require('axios');
 
-const BASE_URL = 'http://localhost:3009/api'; // Ganti jika beda host/port backend
-// const BASE_URL = 'http://backend:3009/api'; // Ganti dengan nama service backend di Docker
+// const BASE_URL = 'http://localhost:3009/api'; // Ganti jika beda host/port backend
+const BASE_URL = 'http://backend:3009/api'; // Ganti dengan nama service backend di Docker
 
 const api = axios.create({
   baseURL: BASE_URL,
