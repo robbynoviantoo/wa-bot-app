@@ -18,4 +18,7 @@ router.post('/add-product', paymentController.addProduct);
 
 router.post('/check', paymentController.checkPaymentStatus);
 
+router.post('/rollback', paymentController.rollbackStockAndAccount);
+
+
 module.exports = router;
