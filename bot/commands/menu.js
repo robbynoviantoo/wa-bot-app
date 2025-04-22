@@ -6,6 +6,7 @@ module.exports = async (msg, groupId, api) => {
       // 🔹 Command hardcoded (default bawaan bot)
       const defaultCommands = [
         "/menu",
+        "/bot [question]",
         "/addcommand [commandbaru]",
         "/removecommand",
         "/setresponse",
