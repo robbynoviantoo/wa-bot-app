@@ -7,6 +7,7 @@ const stickerGifCommand = require("./stickerGif");
 const ytmp3Command = require("./youtube");
 const stockCommand = require("./stock");
 const buyCommand = require("./buy");
+const cancelCommand = require("./batal");
 const askAI = require("../lib/ai");
 
 module.exports = async (msg, groupId, api, client) => {
@@ -70,6 +71,9 @@ module.exports = async (msg, groupId, api, client) => {
 
     case "buy":
       return await buyCommand(msg, client);
+
+    case "batal":
+      return await cancelCommand(msg, client);
     default:
       return msg.reply("⚠️ Command tidak dikenali.");
   }

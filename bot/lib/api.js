@@ -1,7 +1,7 @@
 const axios = require("axios");
 
-// const BASE_URL = 'http://localhost:3009/api'; // Ganti jika beda host/port backend
-const BASE_URL = "http://backend:3009/api"; // Ganti dengan nama service backend di Docker
+const BASE_URL = "http://localhost:3009/api"; // Ganti jika beda host/port backend
+// const BASE_URL = "http://backend:3009/api"; // Ganti dengan nama service backend di Docker
 
 const api = axios.create({
   baseURL: BASE_URL,
@@ -84,6 +84,39 @@ module.exports = {
     }
   },
 
+  // Finalisasi order: ubah status ke "settlement" dan tandai akun tidak available
+  finalizeOrder: async (order_id) => {
+    try {
+      const res = await api.post("/payment/finalize", { order_id });
+      return res.data;
+    } catch (err) {
+      console.error("❌ Gagal finalize order:", err.message);
+      throw new Error("Gagal menyelesaikan pesanan.");
+    }
+  },
+
+  // Batalkan order dan kembalikan akun ke available
+  cancelOrder: async (order_id) => {
+    try {
+      const res = await api.post("/payment/cancel", { order_id });
+      return res.data;
+    } catch (err) {
+      console.error("❌ Gagal cancel order:", err.message);
+      throw new Error("Gagal membatalkan pesanan.");
+    }
+  },
+
+  // Rollback stok & akun jika pembayaran gagal / kadaluarsa
+  rollbackStockAndAccount: async (order_id) => {
+    try {
+      const res = await api.post("/payment/rollback", { order_id });
+      return res.data;
+    } catch (err) {
+      console.error("❌ Gagal rollback stok & akun:", err.message);
+      throw new Error("Rollback gagal.");
+    }
+  },
+
   // checkPaymentStatus: async (order_id) => {
   //   try {
   //     const res = await api.post("/payment/verify", { order_id });
@@ -99,7 +132,10 @@ module.exports = {
       const res = await api.post("/payment/check", { order_id });
       return res.data.status.transaction_status; // "capture", "pending", "expire", dll
     } catch (err) {
-      console.error("Gagal cek status pembayaran:", err.response?.data || err.message);
+      console.error(
+        "Gagal cek status pembayaran:",
+        err.response?.data || err.message
+      );
       return null;
     }
   },
