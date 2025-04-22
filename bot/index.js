@@ -1,15 +1,12 @@
-// const { Client, LocalAuth } = require("whatsapp-web.js");
+const { Client, LocalAuth } = require("whatsapp-web.js");
 const qrcode = require("qrcode-terminal");
 const api = require("./lib/api");
 const handleCommand = require("./commands/commandRouter");
 
 // Docker
-const { Client, RemoteAuth } = require("whatsapp-web.js");
-
 const client = new Client({
-  authStrategy: new RemoteAuth({
-    clientId: "bot", // Bisa diganti kalau kamu mau support banyak client
-    dataPath: "/tmp/puppeteer_profile" // Lokasi folder untuk menyimpan data
+  authStrategy: new LocalAuth({
+    clientId: "bot", // bisa diganti kalau kamu mau support banyak client
   }),
   puppeteer: {
     executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
