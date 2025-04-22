@@ -5,6 +5,9 @@ const handleCommand = require("./commands/commandRouter");
 
 // Docker
 const client = new Client({
+  authStrategy: new LocalAuth({
+    clientId: "bot", // bisa diganti kalau kamu mau support banyak client
+  }),
   puppeteer: {
     executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
     args: ['--no-sandbox', '--disable-setuid-sandbox']
