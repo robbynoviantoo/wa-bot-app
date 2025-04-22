@@ -7,21 +7,29 @@ const handleCommand = require("./commands/commandRouter");
 const client = new Client({
   authStrategy: new LocalAuth({
     clientId: "bot",
-    dataPath: process.env.WA_DATA_PATH || "./session_data"  // Custom session data path
+    dataPath: process.env.WA_DATA_PATH || "./session_data"
   }),
   puppeteer: {
-    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
+    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/chromium-browser',
     args: [
       '--no-sandbox',
       '--disable-setuid-sandbox',
       '--disable-gpu',
       '--disable-dev-shm-usage',
-      '--single-process',  // Helps in some environments
-      `--user-data-dir=${process.env.PUPPETEER_DATA_DIR || '/tmp/wa_puppeteer'}`  // Explicit profile directory
+      '--single-process',
+      '--no-zygote',
+      '--no-first-run',
+      '--disable-extensions',
+      '--use-gl=egl',  // For GPU acceleration in containers
+      `--user-data-dir=${process.env.PUPPETEER_DATA_DIR || '/tmp/wa_puppeteer'}`
     ],
     headless: true,
-    ignoreDefaultArgs: ['--disable-extensions']  // Sometimes needed
-  }
+    ignoreHTTPSErrors: true,
+    slowMo: 10  // Adds small delays between actions for stability
+  },
+  takeoverOnConflict: true,  // Important for session recovery
+  restartOnAuthFail: true,   // Restarts if auth fails
+  qrTimeoutMs: 0            // Disable QR timeout
 });
 
 // // Untuk Windows development
