@@ -6,30 +6,12 @@ const handleCommand = require("./commands/commandRouter");
 // Docker
 const client = new Client({
   authStrategy: new LocalAuth({
-    clientId: "bot",
-    dataPath: process.env.WA_DATA_PATH || "./session_data"
+    clientId: "bot", // bisa diganti kalau kamu mau support banyak client
   }),
   puppeteer: {
-    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/chromium-browser',
-    args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-      '--disable-gpu',
-      '--disable-dev-shm-usage',
-      '--single-process',
-      '--no-zygote',
-      '--no-first-run',
-      '--disable-extensions',
-      '--use-gl=egl',  // For GPU acceleration in containers
-      `--user-data-dir=${process.env.PUPPETEER_DATA_DIR || '/tmp/wa_puppeteer'}`
-    ],
-    headless: true,
-    ignoreHTTPSErrors: true,
-    slowMo: 10  // Adds small delays between actions for stability
-  },
-  takeoverOnConflict: true,  // Important for session recovery
-  restartOnAuthFail: true,   // Restarts if auth fails
-  qrTimeoutMs: 0            // Disable QR timeout
+    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
+  }
 });
 
 // // Untuk Windows development
