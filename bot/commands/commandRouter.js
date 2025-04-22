@@ -5,20 +5,19 @@ const setResponse = require("./setResponse");
 const stickerCommand = require("./sticker");
 const stickerGifCommand = require("./stickerGif");
 const ytmp3Command = require("./youtube");
-const askAI = require("../lib/ai"); // ✅ Jangan tambahkan tanda `()` saat require
+const stockCommand = require("./stock");
+const buyCommand = require("./buy");
+const askAI = require("../lib/ai");
 
-
-module.exports = async (msg, groupId, api) => {
+module.exports = async (msg, groupId, api, client) => {
   const body = msg.body.trim();
 
-  // Hanya proses jika command diawali dengan "/"
   if (!body.startsWith("/")) return;
 
   const commandName = body.slice(1).split(" ")[0].toLowerCase();
 
-  // ✅ Tangani /bot (AI chat)
   if (commandName === "bot") {
-    const prompt = body.slice(5).trim(); // ambil teks setelah "/bot "
+    const prompt = body.slice(5).trim();
     if (!prompt) {
       return msg.reply("⚠️ Mohon masukkan pertanyaan setelah /bot");
     }
@@ -32,7 +31,6 @@ module.exports = async (msg, groupId, api) => {
     }
   }
 
-  // ✅ Cek apakah command termasuk custom command
   const menu = await api.getMenu(groupId);
   if (menu?.commands?.includes(commandName)) {
     const response = await api.getMemory(groupId, `command:${commandName}`);
@@ -43,33 +41,36 @@ module.exports = async (msg, groupId, api) => {
     }
   }
 
-  // ✅ Hardcoded command
   switch (commandName) {
     case "menu":
       return await menuCommand(msg, groupId, api);
-  
+
     case "addcommand":
       return await addCommand(msg, groupId, api);
-  
+
     case "removecommand":
       return await removeCommand(msg, groupId, api);
-  
+
     case "setresponse":
       return await setResponse(msg, groupId, api);
-  
+
     case "sticker":
     case "stiker":
     case "s":
       return await stickerCommand(msg);
-  
+
     case "ytmp3":
       return await ytmp3Command(msg);
-  
+
     case "gif":
-      return await stickerGifCommand(msg); // 👈 Tambahan baru
-  
+      return await stickerGifCommand(msg);
+
+    case "stock":
+      return await stockCommand(msg);
+
+    case "buy":
+      return await buyCommand(msg, client);
     default:
       return msg.reply("⚠️ Command tidak dikenali.");
   }
-  
 };

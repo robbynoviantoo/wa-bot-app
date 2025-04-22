@@ -6,6 +6,7 @@ const groupRoutes = require("./routes/groupRoutes");
 const messageRoutes = require('./routes/messageRoutes');
 const memoryRoutes = require('./routes/memoryRoutes');
 const menuRoutes = require('./routes/menuRoutes');
+const paymentRoutes = require('./routes/paymentRoutes');
 const authRoutes = require('./routes/auth');
 
 dotenv.config();
@@ -40,6 +41,7 @@ app.use("/api/group", groupRoutes);
 app.use('/api/message', messageRoutes);
 app.use('/api/memory', memoryRoutes);
 app.use('/api/menu', menuRoutes);
+app.use('/api/payment', paymentRoutes);
 
 // Sample route
 app.get("/", (req, res) => {

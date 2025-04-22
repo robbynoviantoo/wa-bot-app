@@ -61,7 +61,8 @@ client.on("message", async (msg) => {
     }
 
     if (body.startsWith("/")) {
-      await handleCommand(msg, groupId, api);
+      await handleCommand(msg, groupId, api, client);
+
     }
   } catch (err) {
     console.error("❌ Error saat proses message:", err.message);
