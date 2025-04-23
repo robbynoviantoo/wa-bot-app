@@ -48,10 +48,6 @@ module.exports = async (msg, client) => {
         right: 50,
         background: { r: 255, g: 255, b: 255, alpha: 1 },
       })
-      .resize(400, 400, {
-        fit: "contain",
-        background: { r: 255, g: 255, b: 255, alpha: 1 },
-      })
       .toBuffer();
 
     const media = new MessageMedia(
@@ -83,7 +79,7 @@ module.exports = async (msg, client) => {
     });
 
     // Cek status pembayaran berkala (tiap 10 detik, maksimal 3 menit)
-    const maxRetries = 2;
+    const maxRetries = 18;
     let paid = false;
     let paymentStatus = null;
     let sentMessageId = sentMessage.id._serialized; // Simpan ID pesan untuk dihapus nanti
@@ -102,10 +98,11 @@ module.exports = async (msg, client) => {
       if (paymentStatus === "settlement") {
         paid = true;
         break;
-      } else if (paymentStatus === "expire") {
-        console.log("⌛ Pembayaran telah kadaluarsa.");
+      } else if (paymentStatus === "expire" || paymentStatus === "cancel") {
+        console.log(`⌛ Pembayaran ${paymentStatus === "expire" ? "expired" : "dibatalkan"}.`);
         break;
-      } else if (paymentStatus === "cancel") {
+      }
+       else if (paymentStatus === "cancel") {
         console.log("⌛ Pembayaran telah dicancel.");
         break;
       }
@@ -173,20 +170,20 @@ module.exports = async (msg, client) => {
           `✅ Pembayaran *berhasil* untuk ${qty} produk *${code}*!\n\nBerikut detail akun kamu:\n\n${accountLines}\n\n⚠️ Simpan informasi ini dengan aman!`
         );
       }
-    } else if (paymentStatus === "pending") {
+    } else if (paymentStatus === "expire" || paymentStatus === "cancel") {
+      await deleteBarcodeMessage(msg, sentMessageId);
+      await api.rollbackStockAndAccount(result.order_id);
       await client.sendMessage(
         msg.from,
-        `⏳ Pembayaran untuk order *${code}* masih menunggu konfirmasi. Harap selesaikan pembayaran dalam 30 menit.`
+        `❌ Pembayaran *${paymentStatus}* untuk order *${code}*. Silakan coba lagi.`
       );
     } else {
-      // Pembatalan transaksi
-      console.log(`❌ Pembayaran gagal atau kadaluarsa`);
-      // Kembalikan akun ke stok jika pembayaran gagal atau kadaluarsa
+      // Ini fallback jika status masih pending atau null setelah semua retry
+      await deleteBarcodeMessage(msg, sentMessageId);
       await api.rollbackStockAndAccount(result.order_id);
-
       await client.sendMessage(
         msg.from,
-        `❌ Pembayaran tidak terverifikasi untuk order *${code}*. Silakan coba lagi atau hubungi support.`
+        `❌ Pembayaran tidak terverifikasi untuk order *${code}*. Order telah dibatalkan otomatis.\nSilakan lakukan pemesanan ulang jika masih berminat.`
       );
     }
   } catch (err) {
@@ -197,3 +194,20 @@ module.exports = async (msg, client) => {
     );
   }
 };
+
+async function deleteBarcodeMessage(msg, sentMessageId) {
+  try {
+    const chat = await msg.getChat();
+    const barcodeMessage = await chat.fetchMessages({ limit: 1, fromMe: true });
+
+    if (
+      barcodeMessage.length > 0 &&
+      barcodeMessage[0].id._serialized === sentMessageId
+    ) {
+      await barcodeMessage[0].delete(true);
+      console.log("🗑️ Pesan barcode berhasil dihapus.");
+    }
+  } catch (deleteErr) {
+    console.error("❌ Gagal menghapus pesan barcode:", deleteErr.message);
+  }
+}

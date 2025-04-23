@@ -247,20 +247,13 @@ const paymentController = {
         return res.status(404).json({ message: "Order not found" });
       }
   
-      // Periksa status order jika null dan set ke expired
-      if (!order.status || order.status === "null") {
-        order.status = "expired"; // Jika status masih null, dianggap expired
-        await order.save();
-        console.log("🚩 Order status set to expired due to inactivity.");
-      }
-  
       if (order.status === "cancelled" || order.status === "expired") {
         return res
           .status(400)
           .json({ message: "Order already rolled back or expired" });
       }
   
-      // 🚫 Batalkan transaksi di Midtrans jika masih aktif
+      // 🚫 Batalkan transaksi di Midtrans
       try {
         await snap.transaction.cancel(order.order_id);
         console.log("🛑 Midtrans transaction cancelled:", order.order_id);
@@ -270,13 +263,13 @@ const paymentController = {
   
       // ✅ Kembalikan akun
       await Account.updateMany(
-        { _id: { $in: order.accounts_reserved }, available: false },
+        { _id: { $in: order.accounts }, available: false },
         { $set: { available: true, order_id: null } }
       );
   
       // ✅ Kembalikan stok
       await Product.updateOne(
-        { code: order.code },
+        { code: order.productCode },
         { $inc: { stock: order.quantity } }
       );
   
@@ -284,8 +277,8 @@ const paymentController = {
       order.status = "cancelled";
       await order.save();
   
-      console.log("🔁 Mengembalikan akun:", order.accounts_reserved);
-      console.log("📦 Mengembalikan stok untuk:", order.code);
+      console.log("🔁 Mengembalikan akun:", order.accounts);
+      console.log("📦 Mengembalikan stok untuk:", order.productCode);
   
       res.json({ message: "Rollback success" });
     } catch (error) {
@@ -295,8 +288,7 @@ const paymentController = {
         .json({ message: "Rollback failed", error: error.message });
     }
   }
-  
-  
+
 };
 
 module.exports = paymentController;
