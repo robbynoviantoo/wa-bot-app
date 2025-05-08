@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://103.23.198.66:3009/api/menu"; // Sesuaikan dengan URL API kamu
+const API_URL = "http://10.20.10.106:3009/api/menu"; // Sesuaikan dengan URL API kamu
 
 interface Group {
   groupWaId: string;

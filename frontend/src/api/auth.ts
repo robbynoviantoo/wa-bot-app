@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export const login = async (username: string, password: string) => {
   const response = await axios.post(
-    "http://103.23.198.66:3009/api/auth/login",
+    "http://10.20.10.106:3009/api/auth/login",
     { username, password },
     {
       withCredentials: true,
@@ -13,6 +13,6 @@ export const login = async (username: string, password: string) => {
 };
 
 export const logout = async () => {
-    const response = await axios.post("http://103.23.198.66:3009/api/auth/logout", {}, { withCredentials: true });
+    const response = await axios.post("http://10.20.10.106:3009/api/auth/logout", {}, { withCredentials: true });
     return response.data;
   };
