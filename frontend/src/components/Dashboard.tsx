@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import io from "socket.io-client";
 
 
-const socket = io("http://localhost:3009");
+const socket = io("http://backend:3009");
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
