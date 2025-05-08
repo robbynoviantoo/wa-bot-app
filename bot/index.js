@@ -124,6 +124,6 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(3011, "0.0.0.0", () => {
-  console.log("🚀 WhatsApp bot berjalan di http://localhost:3011");
+server.listen(3009, "0.0.0.0", () => {
+  console.log("🚀 WhatsApp bot berjalan di http://localhost:3009");
 });
