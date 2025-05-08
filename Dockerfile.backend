@@ -16,7 +16,7 @@ COPY . .
 # Pindah ke folder backend agar command dijalankan dari sana
 WORKDIR /app/backend
 
-EXPOSE 3009
+EXPOSE 3011
 
 # Jalankan backend (pastikan "api" script ada di package.json root)
 CMD ["npm", "run", "api"]
