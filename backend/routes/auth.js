@@ -8,8 +8,8 @@ const JWT_SECRET = process.env.JWT_SECRET || 'rahasia-bot-wa';
 
 // Register
 router.post('/register', async (req, res) => {
-  const { username, password } = req.body;
-  console.log('Request body:', req.body); // Log request body untuk debugging
+  const { username, password, email } = req.body;
+  console.log('Request body:', req.body); // Cek apa yang diterima server
   
   try {
     const existingUser = await User.findOne({ username });
@@ -17,11 +17,14 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ error: 'Username already exists' });
     }
 
-    const user = new User({ username, password });
+    const user = new User({ username, password, email });
     await user.save();
     res.json({ message: 'User registered' });
   } catch (err) {
     console.error(err); // Log error untuk debugging
+    if (err.code === 11000) {
+      return res.status(400).json({ error: 'Duplicate key error, email or username already exists' });
+    }
     res.status(500).json({ error: 'Internal server error' });
   }
 });
