@@ -54,6 +54,6 @@ app.get("/", (req, res) => {
 // });
 
 // Docker
-app.listen(3009, '0.0.0.0', () => {
-  console.log('🚀 Backend berjalan di http://localhost:3009');
+app.listen(3011, '0.0.0.0', () => {
+  console.log('🚀 Backend berjalan di http://localhost:3011');
 });
