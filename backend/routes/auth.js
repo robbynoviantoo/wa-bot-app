@@ -9,14 +9,23 @@ const JWT_SECRET = process.env.JWT_SECRET || 'rahasia-bot-wa';
 // Register
 router.post('/register', async (req, res) => {
   const { username, password } = req.body;
+  console.log('Request body:', req.body); // Log request body untuk debugging
+  
   try {
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.status(400).json({ error: 'Username already exists' });
+    }
+
     const user = new User({ username, password });
     await user.save();
     res.json({ message: 'User registered' });
   } catch (err) {
-    res.status(400).json({ error: 'Username already exists' });
+    console.error(err); // Log error untuk debugging
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
+
 
 // Login
 router.post('/login', async (req, res) => {
