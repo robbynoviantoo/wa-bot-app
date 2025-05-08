@@ -1,6 +1,6 @@
 const axios = require("axios");
 
-const API_KEY = process.env.OPENROUTER_API_KEY || "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";
+const API_KEY = process.env.OPENROUTER_API_KEY || "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";
 
 const askAI = async (prompt) => {
   try {
