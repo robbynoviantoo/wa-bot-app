@@ -18,6 +18,10 @@ const Dashboard: React.FC = () => {
     // Optionally redirect or refresh
   };
 
+  const toListGroup = () => {
+    navigate("/login-whatsapp"); // Ganti dengan path login WhatsApp kamu
+  };
+
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-md text-center">
@@ -31,6 +35,12 @@ const Dashboard: React.FC = () => {
           </button>
           <button
             onClick={handleLogoutClick}
+            className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded"
+          >
+            Logout
+          </button>
+          <button
+            onClick={toListGroup}
             className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded"
           >
             Logout
