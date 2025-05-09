@@ -3,7 +3,9 @@ import { QRCodeSVG } from "qrcode.react";
 import io from "socket.io-client";
 import { useNavigate } from "react-router-dom";
 
-const socket = io("http://localhost:3010");
+const socket = io("http://10.20.10.106:3010", {
+  withCredentials: true,
+});
 
 const WhatsappLogin: React.FC = () => {
   const [qrCode, setQrCode] = useState<string | null>(null);
