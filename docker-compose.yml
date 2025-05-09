@@ -29,6 +29,8 @@ services:
       context: .
       dockerfile: Dockerfile.bot
     container_name: bot
+    ports:
+      - "3010:3009"         # ⬅️ TAMBAHKAN INI
     environment:
       - PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
     command: npx nodemon bot/index.js
